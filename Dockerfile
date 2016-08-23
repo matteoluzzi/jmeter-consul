@@ -37,7 +37,7 @@ RUN cd $INSTALL_LOCATION && \
     "s|"/opt/apache-jmeter-2.10/bin/jmeter"|$INSTALL_LOCATION/jmeter|g" \
     > jmeter-launcher/conf/application.conf.tmp && \
     mv jmeter-launcher/conf/application.conf.tmp jmeter-launcher/conf/application.conf && \
-    chmod a+x $INSTALL_LOCATION/jmeter-launcher/bin/jmeter-launcher
+    chmod a+x $INSTALL_LOCATION/jmeter-launcher/start.sh
 
 ENV CONSUL_TEMPLATE_VERSION=0.14.0
 
@@ -65,14 +65,13 @@ RUN mkdir -p /etc/consul-template/config.d /etc/consul-template/template.d /test
 ENV CONSUL_HOST=127.0.0.1:8500
 
 ADD jmeter-master-start.sh.tmpl /
-ADD application.conf.tmpl /
 
 ENV START_SCRIPT=jmeter-server-start.sh
 
 ENV RMI_HOST=0.0.0.0
 
-ENTRYPOINT ["consul-template", "-log-level", "debug", "-wait", "5s:20s", "-consul", "consul:8500", "-template", "/application.conf.tmpl:/application.conf", \
-"-template", "/jmeter-master-start.sh.tmpl:/jmeter-master-start.sh:killall java; sh /jmeter-master-start.sh &"]
+ENTRYPOINT ["consul-template", "-wait", "5s:20s", "-consul", "consul.service.consul:8500", "-template", \
+            "/jmeter-master-start.sh.tmpl:/jmeter-master-start.sh:killall java; sh /jmeter-master-start.sh &"]
 
 # to run/test:
 # docker build -t jmeter . &&  docker run -it --rm --net host -e CONSUL_WAIT="0s" -e CONSUL_HOST=x.x.x.x:8500 jmeter

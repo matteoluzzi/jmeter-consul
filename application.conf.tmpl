@@ -1,0 +1,60 @@
+# This is the main configuration file for the application.
+# ~~~~~
+
+# Secret key
+# ~~~~~
+# The secret key is used to secure cryptographics functions.
+# If you deploy your application to several instances be sure to use the same key!
+application.secret="G<^bKh3:E6rTEDCuUiLc53?[L5seH`6B@C/TK4xDkTSO6Mo=59piGyfcf5yK6i@L"
+
+# The application languages
+# ~~~~~
+application.langs="en"
+
+
+# Logger
+# ~~~~~
+# You can also configure logback (http://logback.qos.ch/),
+# by providing an application-logger.xml file in the conf directory.
+
+# Root logger:
+logger.root=ERROR
+
+# Logger used by the framework:
+logger.play=INFO
+
+# Logger provided to your application:
+logger.application=DEBUG
+
+# Specifies the path where temporary files are written - default is "/tmp/"
+#tempPath = "/tmp/"
+
+# Specifies the folder where test-archive folders/zip-files are read from
+archivesPath = ""
+
+# Specifies the folder where test-run-folders are written to
+testRunsPath = "test-runs"
+
+# Working path to the jmeter-script
+jmeter.path = "/usr/local/jmeter/bin/jmeter"
+
+# Specifies a list of remote nodes to control. Only the jmeter-instance that is going to manage remote nodes
+# needs this list.. If a jmeter-instance is only going to manage a local jmeter-instance,
+# jmeter.remote.nodes has to be configured to an empty list.
+jmeter.remote.nodes = [{{ range ls "jmeter/slaves" }}
+    {name: "{{.Key}}", url: "{{.Value}}"},{{end}}]
+
+# When populating the list of remote nodes, you must specify a name and an url
+# The name is used when refering to the node in the API, and the url is used to talk to
+# the jmeter-launcher-instance
+
+# Example of AWS nodes
+#jmeter.remote.nodes = [
+#    {name: "server1", url: "http://ec2-54-204-246-213.compute-1.amazonaws.com:9000/"}
+#   ,{name: "server2", url: "http://ec2-54-211-242-105.compute-1.amazonaws.com:9000/"}
+#   ,{name: "server3", url: "http://ec2-54-196-244-151.compute-1.amazonaws.com:9000/"}
+#   ,{name: "server4", url: "http://ec2-54-204-141-63.compute-1.amazonaws.com:9000/"}
+#   ,{name: "server5", url: "http://ec2-54-234-211-208.compute-1.amazonaws.com:9000/"}
+#]
+
+akka.actor.debug.receive = on

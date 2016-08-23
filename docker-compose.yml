@@ -1,0 +1,43 @@
+version: '2'
+
+services:
+ consul:
+  hostname: consul
+  image: progrium/consul
+  command: -server -bootstrap -ui-dir /ui
+  ports:
+    - 8300:8300
+    - 8301:8301
+    - 8301:8301/udp
+    - 8302:8302
+    - 8302:8302/udp
+    - 8400:8400
+    - 8500:8500
+
+ registrator:
+  image: gliderlabs/registrator
+  volumes:
+    - /var/run/docker.sock:/tmp/docker.sock:rw
+  command: consul://consul:8500
+  links:
+    - consul
+
+ jmeter-launcher-slave:
+  hostname: jmeter-launcher-slave
+  build:
+   context: .
+   dockerfile: Dockerfile.slave
+  ports:
+  - 9001:9000
+  links:
+  - consul
+
+ jmeter-launcher-master:
+  hostname: jmeter-launcher-master
+  build:
+   context: .
+   dockerfile: Dockerfile.master
+  ports:
+  - 9000:9000
+  links:
+  - consul

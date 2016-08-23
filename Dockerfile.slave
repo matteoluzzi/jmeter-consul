@@ -2,10 +2,12 @@ FROM java:8-jdk-alpine
 
 ENV JMETER_VERSION=3.0
 
-
 ENV INSTALL_LOCATION=/usr/local
 
 ENV JMETER_BINARY=$INSTALL_LOCATION/jmeter/bin/jmeter
+
+#Install ca-certificates and openssl
+RUN apk update && apk add ca-certificates && update-ca-certificates && apk add openssl && apk add bash
 
 # Install JMeter
 RUN cd $INSTALL_LOCATION && \
@@ -23,6 +25,19 @@ RUN cd $INSTALL_LOCATION/jmeter && \
       unzip -o JMeterPlugins-Standard-${JMETER_PLUGINS_VERSION}.zip && \
       unzip -o JMeterPlugins-Extras-${JMETER_PLUGINS_VERSION}.zip && \
       unzip -o JMeterPlugins-ExtrasLibs-${JMETER_PLUGINS_VERSION}.zip
+
+#Install JMeter launcher
+
+RUN cd $INSTALL_LOCATION && \
+    wget http://docs:undocumented@files.vimond.com/jmeter-launcher-0.3.3.zip && \
+    unzip jmeter-launcher-0.3.3.zip && \
+    rm -r ./__MACOSX/ ./jmeter-launcher-0.3.3.zip && \
+    mv jmeter-launcher-0.3.3 jmeter-launcher && \
+    cat jmeter-launcher/conf/application.conf | sed \
+    "s|"/opt/apache-jmeter-2.10/bin/jmeter"|$INSTALL_LOCATION/jmeter|g" \
+    > jmeter-launcher/conf/application.conf.tmp && \
+    mv jmeter-launcher/conf/application.conf.tmp jmeter-launcher/conf/application.conf && \
+    chmod a+x $INSTALL_LOCATION/jmeter-launcher/bin/jmeter-launcher
 
 ENV CONSUL_TEMPLATE_VERSION=0.14.0
 
@@ -55,7 +70,7 @@ ENV START_SCRIPT=jmeter-server-start.sh
 
 ENV RMI_HOST=0.0.0.0
 
-ENTRYPOINT ["consul-template", "-wait", "5s:20s", "-consul", "127.0.0.1:8500", "-template", \
+ENTRYPOINT ["consul-template", "-wait", "5s:20s", "-consul", "consul:8500", "-template", \
             "/jmeter-server-start.sh.tmpl:/jmeter-server-start.sh:killall java; sh /jmeter-server-start.sh&"]
 
 # to run/test:
