@@ -36,7 +36,7 @@ RUN cd $INSTALL_LOCATION && \
     rm -r ./__MACOSX/ ./jmeter-launcher-0.3.3.zip && \
     mv jmeter-launcher-0.3.3 jmeter-launcher && \
     cat jmeter-launcher/conf/application.conf | sed \
-    "s|"/opt/apache-jmeter-2.10/bin/jmeter"|$INSTALL_LOCATION/jmeter|g" \
+    "s|"/opt/apache-jmeter-2.10/bin/jmeter"|$INSTALL_LOCATION/jmeter/bin/jmeter|g" \
     > jmeter-launcher/conf/application.conf.tmp && \
     mv jmeter-launcher/conf/application.conf.tmp jmeter-launcher/conf/application.conf && \
     chmod a+x $INSTALL_LOCATION/jmeter-launcher/bin/jmeter-launcher
