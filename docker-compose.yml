@@ -27,6 +27,7 @@ services:
   build:
    context: .
    dockerfile: Dockerfile.slave
+  image: matteorl/jmeter-launcher-slave
   ports:
   - 9001:9000
   links:
@@ -37,6 +38,7 @@ services:
   build:
    context: .
    dockerfile: Dockerfile.master
+  image: matteorl/jmeter-launcher-master
   ports:
   - 9000:9000
   links:

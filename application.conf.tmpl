@@ -30,10 +30,10 @@ logger.application=DEBUG
 #tempPath = "/tmp/"
 
 # Specifies the folder where test-archive folders/zip-files are read from
-archivesPath = ""
+archivesPath = "/jmeter-tests"
 
 # Specifies the folder where test-run-folders are written to
-testRunsPath = "test-runs"
+testRunsPath = "/test-runs"
 
 # Working path to the jmeter-script
 jmeter.path = "/usr/local/jmeter/bin/jmeter"
@@ -41,8 +41,8 @@ jmeter.path = "/usr/local/jmeter/bin/jmeter"
 # Specifies a list of remote nodes to control. Only the jmeter-instance that is going to manage remote nodes
 # needs this list.. If a jmeter-instance is only going to manage a local jmeter-instance,
 # jmeter.remote.nodes has to be configured to an empty list.
-jmeter.remote.nodes = [{{ range ls "jmeter/slaves" }}
-    {name: "{{.Key}}", url: "{{.Value}}"},{{end}}]
+jmeter.remote.nodes = [{{ range ls "jmeter-connect/slaves" }}
+    {name: "{{.Key}}", url: "http://{{.Value}}:9000/"},{{end}}]
 
 # When populating the list of remote nodes, you must specify a name and an url
 # The name is used when refering to the node in the API, and the url is used to talk to
