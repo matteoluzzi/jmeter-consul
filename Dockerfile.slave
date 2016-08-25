@@ -1,4 +1,5 @@
-FROM java:8-jdk-alpine
+#FROM java:8-jdk-alpine
+FROM vimond-docker-dockerv2-local.artifactoryonline.com/vimond-base-java-8
 
 ENV JMETER_VERSION=3.0
 
@@ -7,7 +8,8 @@ ENV INSTALL_LOCATION=/usr/local
 ENV JMETER_BINARY=$INSTALL_LOCATION/jmeter/bin/jmeter
 
 #Install ca-certificates and openssl
-RUN apk update && apk add ca-certificates && update-ca-certificates && apk add openssl && apk add bash
+#RUN apk update && apk add ca-certificates && update-ca-certificates && apk add openssl && apk add bash
+RUN apt-get install unzip
 
 # Install JMeter
 RUN cd $INSTALL_LOCATION && \
