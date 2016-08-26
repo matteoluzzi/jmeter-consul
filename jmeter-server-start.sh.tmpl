@@ -1,7 +1,5 @@
 #/bin/bash
 
-JMETER_USER_PROPS={{ range ls (printf "jmeter-connect/%s/user.properties" (key_or_default "jmeter-connect/current-test" "default") ) }}-J{{.Key}}={{.Value}}\ {{end}}
-
 JMETER_SYS_PROPS=-Djava.rmi.server.hostname=$RMI_HOST{{ range ls (printf "jmeter-connect/%s/system.properties" (key_or_default "jmeter-connect/current-test" "default") ) }}\ -D{{.Key}}={{.Value}}\ {{end}}
 
 JMETER_LOGGING={{ range ls (printf "jmeter-connect/%s/logging.properties" (key_or_default "jmeter-connect/current-test" "default") ) }}-L{{.Key}}={{.Value}}\ {{end}}

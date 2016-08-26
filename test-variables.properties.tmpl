@@ -1,0 +1,3 @@
+{{ range ls (printf "jmeter-connect/%s/user.properties" (key_or_default "jmeter-connect/current-test" "default") ) }}
+{{.Key}}={{.Value}}
+{{end}}

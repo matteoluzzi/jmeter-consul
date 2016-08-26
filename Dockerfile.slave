@@ -74,7 +74,7 @@ ENV RMI_HOST=0.0.0.0
 
 EXPOSE 9000
 
-ENTRYPOINT ["consul-template", "-wait", "5s:20s", "-consul", "consul.service.consul:8500", "-template", \
+ENTRYPOINT ["consul-template", "-wait", "5s:20s", "-consul", "consul:8500", "-template", \
             "/jmeter-server-start.sh.tmpl:/jmeter-server-start.sh:killall java; sh /jmeter-server-start.sh&"]
 
 # to run/test:
