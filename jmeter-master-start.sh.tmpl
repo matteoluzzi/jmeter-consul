@@ -10,6 +10,7 @@ JMETER_CLI="{{ key_or_default (printf "/jmeter-connect/%s/cli" (key_or_default "
 
 $INSTALL_LOCATION/jmeter-launcher/bin/jmeter-launcher -Dconfig.file=/application.conf $JMETER_USER_PROPS $JMETER_CLI $JMETER_PROPS
 
+
 # Delete running script after java process dies. Makes consul rewrite and thus restart on startup
 rm -- "$0"
 

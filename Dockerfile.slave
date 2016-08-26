@@ -68,14 +68,18 @@ ENV CONSUL_HOST=127.0.0.1:8500
 
 ADD jmeter-server-start.sh.tmpl /
 
+#We need to pass the test variables to jmeter launcher somehow
+ADD test-variables.properties.tmpl /
+
 ENV START_SCRIPT=jmeter-server-start.sh
 
 ENV RMI_HOST=0.0.0.0
 
 EXPOSE 9000
 
-ENTRYPOINT ["consul-template", "-wait", "5s:20s", "-consul", "consul:8500", "-template", \
-            "/jmeter-server-start.sh.tmpl:/jmeter-server-start.sh:killall java; sh /jmeter-server-start.sh&"]
+ENTRYPOINT ["consul-template", "-consul", "consul.service.consul:8500", "-template", \
+            "/jmeter-server-start.sh.tmpl:/jmeter-server-start.sh:killall java; sh /jmeter-server-start.sh&", \
+            "-template", "/test-variables.properties.tmpl:/test-variables.properties:killall java; sh /jmeter-server-start.sh&"]
 
 # to run/test:
 # docker build -t jmeter . &&  docker run -it --rm --net host -e CONSUL_WAIT="0s" -e CONSUL_HOST=x.x.x.x:8500 jmeter

@@ -42,7 +42,7 @@ jmeter.path = "/usr/local/jmeter/bin/jmeter"
 # needs this list.. If a jmeter-instance is only going to manage a local jmeter-instance,
 # jmeter.remote.nodes has to be configured to an empty list.
 jmeter.remote.nodes = [{{ range ls "jmeter-connect/slaves" }}
-    {name: "{{.Key}}", url: "http://{{.Value}}/"},{{end}}]
+    {name: "{{.Key}}", url: "http://{{.Value}}:9000/"},{{end}}]
 
 # When populating the list of remote nodes, you must specify a name and an url
 # The name is used when refering to the node in the API, and the url is used to talk to
